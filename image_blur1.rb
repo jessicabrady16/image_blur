@@ -4,6 +4,7 @@ class Image
   attr_reader :grid
   def initialize(grid)
     @grid = grid
+   @manhan_dist = n
   end
 
   def blur
@@ -27,11 +28,11 @@ class Image
         else
           result_row.push(cell)
         end
-
       end
       result.push(result_row)
     end
     @grid = result
+    self
   end
 
   def output_image
@@ -42,27 +43,30 @@ class Image
 end
 
 image = Image.new(
-  [
-    [0, 0, 0, 0],
-    [0, 1, 0, 0],
-    [0, 0, 0, 1],
-    [0, 1, 0, 0],
-    [1, 0, 0, 0],
-    [1, 0, 0, 0],
+  [ [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 1]
   ]
 )
 
-image.blur
+
+#blur
+image.begin
 image.output_image
-
 expected =
-[
-  [0, 1, 0, 0],
-  [1, 1, 1, 1],
-  [0, 1, 1, 1],
-  [1, 1, 1, 1],
-  [1, 1, 0, 0],
-  [1, 1, 0, 0],
-]
+  [
+    [0, 1, 0, 0],
+    [1, 1, 1, 1],
+    [0, 1, 1, 1],
+    [1, 1, 1, 1],
+    [1, 1, 0, 0],
+    [1, 1, 0, 0]
+  ]
 
-puts "#{expected == image.grid}"
+puts (expected == image.grid).to_s
