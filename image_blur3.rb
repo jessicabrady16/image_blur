@@ -52,27 +52,28 @@ class Image
         return
       end
       things_to_blur.push(current)
-      left_cell = Point.new(current.x-1, current.y)
-      recursive_blur_impl(start, left_cell, things_to_blur, visited_array)
-      right_cell = Point.new(current.x+1, current.y)
-      recursive_blur_impl(start, right_cell, things_to_blur, visited_array)
-      up_cell = Point.new(current.x, current.y-1)
-      recursive_blur_impl(start, up_cell, things_to_blur, visited_array)
-      down_cell = Point.new(current.x, current.y+1)
-      recursive_blur_impl(start, down_cell, things_to_blur, visited_array)
+      create_cross_array(current).each do |cross_point|
+        recursive_blur_impl(start, cross_point, things_to_blur, visited_array)
+        end
+    end
+
+  #doing this to create the loop I need to make at each point
+  def create_cross_array(start)
+    cross_array =[
+      Point.new(start.x-1, start.y),
+      Point.new(start.x+1, start.y),
+      Point.new(start.x, start.y-1),
+      Point.new(start.x, start.y+1),
+    ]
+    return cross_array
   end
 
   #helper methiod..needy computers (kicking off the recursion by blurring out from origin point in all 4 directions left, down, up, right)
   def recursive_blur(start, things_to_blur)
     visited_array = [start]
-    left_cell = Point.new(start.x-1, start.y)
-    recursive_blur_impl(start, left_cell, things_to_blur, visited_array)
-    right_cell = Point.new(start.x+1, start.y)
-    recursive_blur_impl(start, right_cell, things_to_blur, visited_array)
-    up_cell = Point.new(start.x, start.y-1)
-    recursive_blur_impl(start, up_cell, things_to_blur, visited_array)
-    down_cell = Point.new(start.x, start.y+1)
-    recursive_blur_impl(start, down_cell, things_to_blur, visited_array)
+    create_cross_array(start).each do |cross_point|
+    recursive_blur_impl(start, cross_point, things_to_blur, visited_array)
+    end
   end
 
   #need to take all the points and make them a 1.
@@ -101,14 +102,14 @@ class Image
   end
 end
 
-grid =
-  [ [0, 0, 0, 0, 0, 0, 0, 0, 0],
+grid = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 1, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 1],
   ]
 Image.new(grid,2).blur
+
